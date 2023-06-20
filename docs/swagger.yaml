@@ -1,0 +1,18 @@
+info:
+  contact: {}
+  description: Fast and modern REST-API for Swiss Postal Codes
+  title: Postal Codes API
+  version: "1.0"
+paths:
+  /api/postal-codes:
+    get:
+      consumes:
+      - application/json
+      description: Get all Postal Codes
+      produces:
+      - application/json
+      responses: {}
+      summary: Get all Postal Codes
+      tags:
+      - postal-codes
+swagger: "2.0"
