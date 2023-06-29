@@ -4,7 +4,7 @@ info:
   title: Postal Codes API
   version: "1.0"
 paths:
-  /api/postal-codes:
+  /api/plz/all:
     get:
       consumes:
       - application/json
@@ -13,6 +13,26 @@ paths:
       - application/json
       responses: {}
       summary: Get all Postal Codes
+      tags:
+      - postal-codes
+  /api/plz/search:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of postal codes based on the query.
+      parameters:
+      - description: plz search by place
+        in: query
+        name: place
+        type: string
+      - description: plz search by code
+        in: query
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Finds Postal Codes
       tags:
       - postal-codes
 swagger: "2.0"

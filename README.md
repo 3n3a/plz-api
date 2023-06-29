@@ -8,6 +8,12 @@
 * Compresses Responses with GZIP
 * Fast JSON-Encoding
 
+## Run Locally
+
+```bash
+air
+```
+
 ## Generate Documentation (Swagger)
 
 Run this command

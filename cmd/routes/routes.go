@@ -19,13 +19,22 @@ func New(dbInstance db.DB) *fiber.App {
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 	})
-	app.Use(cache.New())
+
+	app.Use(cache.New(cache.Config{
+		KeyGenerator: func(c *fiber.Ctx) string {
+			return c.OriginalURL()
+		},
+	}))
 	app.Use(compress.New())
 	// app.Use(limiter.New())
 
 	api := app.Group("/api")
-	api.Get("postal-codes", func(c *fiber.Ctx) error {
+	api.Get("plz/all", func(c *fiber.Ctx) error {
 		return handlers.GetAllPostalCodes(c, &dbInstance)
+	})
+
+	api.Get("plz/search", func(c *fiber.Ctx) error {
+		return handlers.FindPostalCodes(c, &dbInstance)
 	})
 	
 
