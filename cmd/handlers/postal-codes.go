@@ -23,6 +23,32 @@ func GetAllPostalCodes(c *fiber.Ctx, db *db.DB) error {
 	return c.JSON(plz)
 }
 
+// SearchPostalCodes queries Postal Codes
+// @Summary Searches Postal Codes
+// @Description Returns a list of postal codes based on the query.
+// @Tags postal-codes
+// @Accept json
+// @Produce json
+// @Param	q	query	string	false	"plz search query in all fields"
+// @Router /api/plz/search [get]
+func SearchPostalCodes(c *fiber.Ctx, db *db.DB) error {
+	query := c.Query("q")
+
+	var plz = make([]models.PLZ, 0)
+
+	if (len(query) > 0) {
+		db.Conn.Unscoped().Where(
+			"LOWER(place) LIKE LOWER(?)", 
+			fmt.Sprintf("%%%s%%", query),
+		).Or(
+			"LOWER(postal_code::text) LIKE LOWER(?)", 
+			fmt.Sprintf("%s%%", query),
+		).Find(&plz)
+	}
+
+	return c.JSON(plz)
+}
+
 // FindPostalCodes finds Postal Codes
 // @Summary Finds Postal Codes
 // @Description Returns a list of postal codes based on the query.
@@ -31,7 +57,7 @@ func GetAllPostalCodes(c *fiber.Ctx, db *db.DB) error {
 // @Produce json
 // @Param	place	query	string	false	"plz search by place"
 // @Param	code	query	string	false	"plz search by code"
-// @Router /api/plz/search [get]
+// @Router /api/plz/find [get]
 func FindPostalCodes(c *fiber.Ctx, db *db.DB) error {
 	place := c.Query("place")
 	code := c.Query("code")

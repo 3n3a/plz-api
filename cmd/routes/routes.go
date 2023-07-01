@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	// "github.com/gofiber/fiber/v2/middleware/limiter"
 	swagger "github.com/arsmn/fiber-swagger/v2"
@@ -26,6 +27,7 @@ func New(dbInstance db.DB) *fiber.App {
 		},
 	}))
 	app.Use(compress.New())
+	app.Use(cors.New())
 	// app.Use(limiter.New())
 
 	api := app.Group("/api")
@@ -33,10 +35,13 @@ func New(dbInstance db.DB) *fiber.App {
 		return handlers.GetAllPostalCodes(c, &dbInstance)
 	})
 
-	api.Get("plz/search", func(c *fiber.Ctx) error {
+	api.Get("plz/find", func(c *fiber.Ctx) error {
 		return handlers.FindPostalCodes(c, &dbInstance)
 	})
 	
+	api.Get("plz/search", func(c *fiber.Ctx) error {
+		return handlers.SearchPostalCodes(c, &dbInstance)
+	})
 
 	app.Get("/docs/*", swagger.HandlerDefault)
 
