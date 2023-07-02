@@ -8,6 +8,11 @@
 * Compresses Responses with GZIP
 * Fast JSON-Encoding
 
+## Env Vars
+
+* `DB_CONN`
+* `CACHE_DURATION` - in Minutes
+
 ## Run Locally
 
 ```bash
@@ -46,5 +51,5 @@ docker run --rm -p 3000:3000 --name plz_api -e DB_CONN="<DB_CONN>" plz-api
 
 ## Todo
 
-- [ ] Consider upping the time data stays in cache, because source only updates every month... Maybe to 1 Month?
+- [x] Consider upping the time data stays in cache, because source only updates every month... Maybe to 1 Month?
 - [ ] ...

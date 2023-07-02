@@ -1,6 +1,10 @@
 package routes
 
 import (
+	"os"
+	"strconv"
+	"time"
+
 	json "github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
@@ -21,7 +25,9 @@ func New(dbInstance db.DB) *fiber.App {
 		JSONDecoder: json.Unmarshal,
 	})
 
+	cacheDuration, _ := strconv.Atoi(os.Getenv("CACHE_DURATION"))
 	app.Use(cache.New(cache.Config{
+		Expiration: time.Duration(cacheDuration) * time.Minute,
 		KeyGenerator: func(c *fiber.Ctx) string {
 			return c.OriginalURL()
 		},
